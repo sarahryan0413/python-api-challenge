@@ -1,28 +1,50 @@
-# python-api-challenge
-# Getting Started with WeatherPy
-For this challenge, the goal is to demonstrate that cities closer to the equator tend to be hotter. 
-To start, I generated 1,500 random latitude/longitude pairs and used them to create a list of cities. Then, I fetched weather data for those cities using the OpenWeatherMap API. Initially, I didn't realize the data was in Kelvin, so I added units = metric to my endpoint URL to convert the temperatures to Celsius. Before diving into pulling data for all the cities, I decided to first explore a single city to understand what I was working with. I used Minneapolis for this initial test, sending a GET request and JSONifying the result. 
-Once I had a sense of the data, I began writing a for loop to retrieve information like latitude, longitude, maximum temperature, humidity, cloud coverage, wind speed, country, and date. I also used a try-except block to skip over any cities that caused errors.
-After loading the data, I moved on to creating scatterplots. During this process, I ran into some interesting challenges. The first was realizing that the temperature data seemed strange—this is when I figured out I needed to convert the temperature to Celsius.
-Another issue was when I compared my scatterplot to the example plot provided in the instructions. My data had a lot of negative temperature values, while the example didn’t. I soon discovered that the example plot used a fixed date of "2024-06-17," while my data was randomly pulled from different cities on different date. I also wanted the date in my plot to reflect the current day when the grader opens the notebook. I found a solution for that by using Python's datetime module to insert today's date, which will automatically update when the notebook is opened later. Here's the source I used:
-"Getting Today's Date in YYYY-MM-DD in Python." Stack Overflow, 2015, https://stackoverflow.com/questions/32490629/getting-todays-date-in-yyyy-mm-dd-in-python.
-I still noticed an odd pattern in my temperature vs. latitude scatterplot. There was a cluster of negative temperatures in the 20-80 latitude range. Upon further investigation, I realized that cities in the northern latitudes, especially between 40-80, are experiencing winter right now. For example, Albany, NY is currently -10°C, which I verified against other sources. Based on this, I trust that the negative temperatures I’m seeing are accurate. 
-Next, I created a linear regression function to analyze the relationship between latitude and temperature. The challenge with this was dynamically annotating the line equation on the plot. I initially set the equation’s position to (0,0), but it didn’t show up on the southern hemisphere plot because that point wasn’t on the graph. I adjusted the position based on the min values of both the x and y axes, placing the equation in the bottom-left corner of the graph.
-## Observations About the Linear Relationship of Temperature and Latitude:
-Looking at the northern hemisphere linear regression, I observed a moderately strong negative correlation: as you move north from the equator, the temperature tends to drop. The r² value of 0.70 tells me this relationship is a good model. The y-intercept of 35.55°C suggests that the temperature at the equator would be quite hot. The line's slope of -0.81 shows a significant decrease in temperature as you move north. I saw temperatures in the 60-80° latitude range dropping as low as -40°C, with one outlier at 80° N showing a temperature near 0°C.
-For the southern hemisphere, I noticed a moderately weak positive correlation: temperatures near the equator tend to be warmer, but with an r² value of only 0.27, the relationship isn’t very strong. The data points are widely clustered around temperatures of 20-30°C and latitudes from -35° to 0°, with a noticeable dip into colder temperatures around latitudes of -35° to -50°. The majority of points are in the warmer temperature range.
-Interestingly, more northern cities are experiencing colder temperatures than southern cities, which makes sense because the Northern Hemisphere is in its winter months. If I wanted to explore this further, I might analyze the percentage of northern vs. southern cities experiencing temperatures below 3°C, but I’m not diving that deep just yet.
-Overall, the data supports the idea that latitude has a significant impact on temperature, with the Northern Hemisphere showing colder temperatures due to its winter season. 
-## Observations About the Linear Relationship of Humidity and Latitude:
-This was an interesting correlation, and both relationships turned out to be significantly weak. Initially, I noticed that the northern hemisphere has a weak correlation with an r² value of 0.18. The rate of change is 0.5, suggesting a positive correlation, which would indicate that the farther up north you go, the more humidity you will experience. This was a fascinating observation for me. I live in the northern hemisphere, so I always assumed that humidity is much lower during the winter months, but this plot suggests otherwise. It’s a bit of a surprise that humidity might increase as you move north—perhaps it’s a snowy moment, and the northern regions are seeing an uptick in humidity. Snowstorms and cold weather can actually add moisture to the air, even if it feels dry.
-You can see this trend more clearly in the latitude range 35–80, where the humidity levels rarely dip below 40%. It’s also interesting that at the equator, humidity levels vary quite a bit. Between latitudes 0°–30°, the range of humidity spans from 0% to 100%, showing that not all cities near the equator are experiencing the same level of humidity. So, even though we think of the equator as consistently humid, the data tells us there's a lot more variability.
-For the southern hemisphere, the correlation is almost nonexistent, with an r² value of 0.06. This tells us that latitude doesn't seem to have much of an effect on humidity in this region, so I wouldn’t say there’s a clear pattern. Even though the line of best fit has a rate of change of 0.34, which suggests that closer proximity to the equator leads to more humidity, the r² value is so low that this model isn’t showing a strong relationship.
-Overall, it's clear that humidity is influenced by factors other than latitude—weather systems, local geography, and seasonal conditions are likely playing much larger roles. It’s worth considering that these factors might be contributing to the weak correlations we’re seeing. Even though the data from the northern hemisphere shows a slight positive trend, I wouldn’t conclude that latitude alone is driving these changes in humidity.
-## Observations About the Linear Relationship of Cloudiness and Latitude:
-The correlation between latitude and cloudiness is significantly weak, with r² values of 0.03 for the northern hemisphere and 0.06 for the southern hemisphere. However, there are some interesting patterns to note. In the northern hemisphere, we see some intriguing clustering of cloudiness data. It seems like cities either have 0% cloud coverage or 100% cloud coverage, with very few data points in between. The points are heavily concentrated at the extremes, with many cities experiencing either clear skies or overcast conditions. This trend persists across all latitudes, from the equator to the higher latitudes.
-In the southern hemisphere, the data is a bit more spread out, though there is still noticeable clustering. Between latitudes -20 and 0, many cities fall in the 100% cloudiness range, suggesting that cloud cover may be more consistent in that region. However, even with this additional insight, there’s still not enough of a clear pattern to draw definitive conclusions between latitude and cloudiness.
-Overall, it’s safe to say that while there are some clusters, latitude doesn’t seem to be a strong predictor of cloudiness. Other weather systems or regional patterns might be influencing cloud coverage more than just the position relative to the equator.
-## Observations About the Linear Relationship of Wind Speed and Latitude:
-My final observation is regarding the relationship between latitude and wind speed, which shows a significantly weak correlation. In the northern hemisphere, the r² value is 0.02, indicating a very weak correlation. One interesting pattern I noticed is that there are fewer data points in the wind speed range of 8-12 m/s, suggesting that high wind speeds are not very common in the northern hemisphere. When we do see higher wind speeds, they tend to occur mostly between latitudes 0 and 30, but even in this region, the correlation remains weak.
-In the southern hemisphere, the relationship is similarly weak, with an r² value of 0.07. Like the northern hemisphere, there aren't many high wind speeds. The data points mostly cluster in the 0-10 m/s range, showing that wind speeds in the south also lack strong variation.
-Overall, wind speed doesn’t seem to correlate strongly with latitude in either hemisphere. While there are some small clusters of higher wind speeds near the equator, the overall pattern is not strong enough to make any definitive conclusions.
+# Weather Data Analysis: Exploring the Relationship Between Latitude and Climate Variables
+## Project Overview 🌍☀️💨
+The goal of this project is to analyze the relationship between latitude and various weather conditions, including temperature, humidity, cloudiness, and wind speed. The expectation is that cities closer to the equator will generally be warmer. To test this, I used Python to generate 1,500 random latitude/longitude pairs and mapped them to real-world cities using the Citipy library. Then, I retrieved weather data for those cities using the OpenWeatherMap API.
+## Data Collection & Challenges 🔍📊
+### Step 1: Initial API Call
+Before retrieving data for all 1,500 cities, I first tested a single city (Minneapolis) to explore the API response. I sent a GET request and converted the response to JSON to get a feel for the structure of the data.
+### Step 2: Fetching Weather Data
+After confirming the API response structure, I wrote a for loop to extract key data points, including:
+- Latitude & Longitude
+- Maximum Temperature
+- Humidity
+- Cloud Coverage
+- Wind Speed
+- Country
+- Date
+To handle errors (e.g., missing data or failed API requests), I implemented a try-except block to skip any problematic cities.
+### Step 3: Data Wrangling & Adjustments
+During data collection, I ran into some interesting challenges:
+1. Temperature Scale Mix-Up 🥶🔥 - Initially, I didn't realize the API returned temperatures in Kelvin, so my first scatterplots looked completely off. I fixed this by adding units=metric to my API request to convert temperatures to Celsius.
+2. Date Mismatch in Scatterplots 📅 - My temperature scatterplot had a lot of negative values, which didn’t match the example plot in the project instructions. I discovered that the example used a fixed date (2024-06-17), while my data was dynamic. To ensure my plot reflects the current date each time it’s opened, I used Python’s datetime module.
+3. Odd Temperature Clusters 🏔️ - Some temperatures in the 20°-80° latitude range seemed too cold. After cross-checking real-time weather reports, I confirmed these were accurate—many northern hemisphere cities were experiencing winter, while southern cities remained warmer.
+4. Dynamic Regression Line Labels 📈 - I created a function to dynamically annotate my linear regression plots. Initially, the text didn’t appear in some plots because I set the coordinates to (0,0). To fix this, I adjusted the annotation based on the minimum x and y values of each plot.
+## Key Findings 🔬📉
+### Temperature vs. Latitude 🌡️
+- Northern Hemisphere: There is a moderately strong negative correlation (r² = 0.70), meaning temperatures decrease as you move north from the equator. The y-intercept (35.55°C) suggests the temperature at 0° latitude would be quite hot.
+- Southern Hemisphere: There is a weaker positive correlation (r² = 0.27), showing a general warming trend closer to the equator. However, the relationship isn’t as strong as in the north.
+- Seasonal Impact: Many northern cities are significantly colder than their southern counterparts, which makes sense given the current winter season in the Northern Hemisphere.
+### Humidity vs. Latitude 💧
+- Northern Hemisphere: Weak positive correlation (r² = 0.18). Surprisingly, humidity increases as you move north, possibly due to seasonal snowstorms adding moisture to the air.
+- Southern Hemisphere: No significant relationship (r² = 0.06), suggesting latitude alone doesn’t determine humidity—other factors like local weather systems play a bigger role.
+- Equatorial Variability: Humidity levels near 0° latitude range from 0% to 100%, showing that not all equatorial cities are humid.
+### Cloudiness vs. Latitude ☁️
+- Northern Hemisphere: No strong correlation (r² = 0.03), but an interesting bimodal clustering—many cities either have 0% or 100% cloud coverage, with few in between.
+- Southern Hemisphere: Similarly weak correlation (r² = 0.06). However, between latitudes -20 and 0, there’s a noticeable concentration of 100% cloud cover, suggesting potential regional weather patterns.
+- Conclusion: Latitude does not predict cloudiness well, and local climate factors seem to have a stronger influence.
+### Wind Speed vs. Latitude 🌬️
+- Northern Hemisphere: Extremely weak correlation (r² = 0.02), with wind speeds clustering mostly between 0-8 m/s.
+- Southern Hemisphere: Slightly stronger correlation (r² = 0.07), but still not significant. High wind speeds are uncommon in both hemispheres.
+- Conclusion: Latitude does not strongly influence wind speed, but equatorial regions see slightly higher variation.
+## Final Thoughts 💡
+This project confirmed that latitude has a significant impact on temperature, with a stronger correlation in the Northern Hemisphere due to the current winter season. However, other factors—like geography, weather patterns, and seasonal conditions—play major roles in humidity, cloudiness, and wind speed. While I found some intriguing patterns, it’s clear that latitude alone isn’t enough to predict most weather variables.  
+
+Future improvements could include:
+- Analyzing seasonal trends over multiple months.
+- Comparing data for cities at the same latitude but different elevations.
+- Exploring the impact of ocean proximity on climate variables.  
+
+Overall, this project was a great opportunity to practice working with APIs, JSON parsing, data visualization, and linear regression. 📊🐍🚀  
+
+📊 Data provided by edX Boot Camps LLC for educational purposes.
